@@ -201,7 +201,9 @@ void BpNet::training(static vector<sample> sampleGroup, double threshold)
 		cout << "training error: " << error << endl; //打印出当前神经网络总体误差值
 		error = 0.f;	//用于记录每次训练网络的总误差值的变量清零
 		// initialize delta sum
+		//初始化输入层的wDeltaSum
 		for (int i = 0; i < innode; i++) inputLayer[i]->wDeltaSum.assign(inputLayer[i]->wDeltaSum.size(), 0.f);
+		//初始化隐含层的wDeltaSum
 		for (int i = 0; i < hidelayer; i++){
 			for (int j = 0; j < hidenode; j++)
 			{
@@ -209,29 +211,31 @@ void BpNet::training(static vector<sample> sampleGroup, double threshold)
 				hiddenLayer[i][j]->bDeltaSum = 0.f;
 			}
 		}
+		//初始化输出层的bias偏移量误差值的总和
 		for (int i = 0; i < outnode; i++) outputLayer[i]->bDeltaSum = 0.f;
 
-		for (int iter = 0; iter < sampleNum; iter++)
+		//
+		for (int iter = 0; iter < sampleNum; iter++)  //一个样本训练一次网络，则一组训练为sampleNum次训练
 		{
-			setInput(sampleGroup[iter].in);
-			setOutput(sampleGroup[iter].out);
-
+			setInput(sampleGroup[iter].in); //使用样本初始化输入层节点值
+			setOutput(sampleGroup[iter].out);	//使用样本初始化输出层的期望输出值
 			forwardPropagationEpoc();
-			backPropagationEpoc();
+			backPropagationEpoc();	
 		}
 
 		// backward propagation on input layer
-		// -- update weight
+		// -- update weight     更新输入层到隐含层权值
 		for (int i = 0; i < innode; i++)
 		{
 			for (int j = 0; j < hidenode; j++)
 			{
 				inputLayer[i]->weight[j] -= learningRate * inputLayer[i]->wDeltaSum[j] / sampleNum;
+
 			}
 		}
 
 		// backward propagation on hidden layer
-		// -- update weight & bias
+		// -- update weight & bias   更新隐含层的权值和偏移量
 		for (int i = 0; i < hidelayer; i++)
 		{
 			if (i == hidelayer - 1)
@@ -330,7 +334,7 @@ void BpNet::predict(vector<sample>& testGroup)
 }
 
 
-//将样本中的正确输入更新到输入层节点上
+//将样本中的输入值更新到输入层节点上
 void BpNet::setInput(static vector<double> sampleIn)
 {
 	for (int i = 0; i < innode; i++) inputLayer[i]->value = sampleIn[i];
