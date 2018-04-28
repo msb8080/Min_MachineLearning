@@ -198,7 +198,7 @@ void BpNet::training(static vector<sample> sampleGroup, double threshold)
 	while (error > threshold)  //当实际误差和不小于目标误差，则继续使用样本训练BP神经网络
 		//for (int curTrainingTime = 0; curTrainingTime < trainingTime; curTrainingTime++)
 	{
-		cout << "training error: " << error << endl; //打印出当前神经网络总体误差值
+		cout << "训练误差: " << error << endl; //打印出当前神经网络总体误差值
 		error = 0.f;	//用于记录每次训练网络的总误差值的变量清零
 		// initialize delta sum
 		//初始化输入层的wDeltaSum

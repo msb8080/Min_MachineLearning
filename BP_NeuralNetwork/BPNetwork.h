@@ -9,7 +9,7 @@
 using namespace std;
 
 #define innode 2        //输入结点数
-#define hidenode 4      //隐含结点数
+#define hidenode 3    //隐含结点数
 #define hidelayer 1     //隐含层数
 #define outnode 1       //输出结点数
 #define learningRate 0.9	//学习速率，alpha

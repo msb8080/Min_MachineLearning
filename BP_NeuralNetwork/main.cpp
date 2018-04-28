@@ -7,13 +7,10 @@ int main()
 {
 	BpNet testNet;
 
-	// 学习样本
+	//学习昆虫样本 15组
 	vector<double> samplein[TRAINSAMPLENUM];
 	vector<double> sampleout[TRAINSAMPLENUM];
-	//samplein[0].push_back(0); samplein[0].push_back(0); sampleout[0].push_back(0);
-	//samplein[1].push_back(0); samplein[1].push_back(1); sampleout[1].push_back(1);
-	//samplein[2].push_back(1); samplein[2].push_back(0); sampleout[2].push_back(1);
-	//samplein[3].push_back(1); samplein[3].push_back(1); sampleout[3].push_back(0);
+
 	samplein[0].push_back(1.78); samplein[0].push_back(1.14); sampleout[0].push_back(0.9);
 	samplein[1].push_back(1.96); samplein[1].push_back(1.18); sampleout[1].push_back(0.9);
 	samplein[2].push_back(1.86); samplein[2].push_back(1.20); sampleout[2].push_back(0.9);
@@ -38,16 +35,13 @@ int main()
 		sampleInOut[i].out = sampleout[i];
 	}
 	vector<sample> sampleGroup(sampleInOut, sampleInOut + TRAINSAMPLENUM);
-	testNet.training(sampleGroup, 0.1);
 
-	// 测试数据
+	//训练样本操作
+	testNet.training(sampleGroup, 0.1); //为了使运行时间短些，设置目标误差为0.1，可以设置更小的值
+
+	//测试昆虫样本  两组0.9 两组0.1
 	vector<double> testin[TESTSAMPLENUM];
 	vector<double> testout[TESTSAMPLENUM];
-	/*testin[0].push_back(0.1);   testin[0].push_back(0.2);
-	testin[1].push_back(0.15);  testin[1].push_back(0.9);
-	testin[2].push_back(1.1);   testin[2].push_back(0.01);
-	testin[3].push_back(0.88);  testin[3].push_back(1.03);*/
-
 	testin[0].push_back(1.78);   testin[0].push_back(1.14);
 	testin[1].push_back(1.96);  testin[1].push_back(1.18);
 	testin[2].push_back(1.82);   testin[2].push_back(1.38);
@@ -62,7 +56,7 @@ int main()
 	for (int i = 0; i < testGroup.size(); i++)
 	{
 		for (int j = 0; j < testGroup[i].in.size(); j++) cout << testGroup[i].in[j] << "\t";
-		cout << "-- prediction :";
+		cout << "-- 预测结果 :";
 		for (int j = 0; j < testGroup[i].out.size(); j++) {		//cout << testGroup[i].out[j] << "\t";
 			
 			if (testGroup[i].out[j] >0 && testGroup[i].out[j] <0.3)  //如果输出值在0到0.3之间，预测昆虫类型为Af
